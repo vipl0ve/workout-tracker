@@ -12,6 +12,11 @@ import ExercisesList from "./components/exercises-list.component";
 import CreateExercise from "./components/create-exercise.component";
 import EditExercise from "./components/edit-exercise.component";
 import CreateUser from "./components/create-user.component";
+import ViewUser from "./components/view-user.component";
+import EditUser from "./components/edit-user.component";
+// import RoutinesList from "./components/routines-list.component";
+import CreateRoutine from "./components/create-routine.component";
+// import EditRoutine from "./components/edit-routine.component";
 
 function App() {
   return (
@@ -25,9 +30,14 @@ function App() {
     <Route path="/workout/add" exact component={CreateWorkoutLog} />
     <Route path="/workout/edit/:id" component={EditWorkoutLog} />
     <Route path="/exercise" exact component={ExercisesList} />
+    {/* <Route path="/routine/" component={RoutinesList} /> */}
+    <Route path="/routine/add" component={CreateRoutine} />
+    {/* <Route path="/routine/edit/:id" component={EditRoutine} /> */}
     <Route path="/exercise/add" component={CreateExercise} />
     <Route path="/exercise/edit/:id" component={EditExercise} />
     <Route path="/user/add" component={CreateUser} />
+    <Route path="/user/profile/:id" component={ViewUser} />
+    <Route path="/user/edit/:id" component={EditUser} />
     </div>
   </Router>
   );

@@ -15,12 +15,18 @@ router.route('/add').post((req, res) => {
   const age = Number(req.body.age);
   const weight = Number(req.body.weight);
   const height = Number(req.body.height);
+  const unit = req.body.unit;
+  const activity = req.body.activity;
+  const bmi = Number(req.body.bmi);
+  const bmiCategory = req.body.bmiCategory;
+  const bmr = Number(req.body.bmr);
+  const dailycalories = Number(req.body.dailycalories);
 
-  const newUser = new User({username, gender, age, weight, height});
+  const newUser = new User({username, gender, age, weight, height, unit, activity, bmi, bmiCategory, bmr, dailycalories});
 
   newUser.save()
-    .then(() => res.json('User added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+  .then(newuser => res.json({'data': 'User added!', 'id': newuser._id}))
+  .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // Get User
@@ -46,9 +52,15 @@ router.route('/update/:id').post((req, res) => {
       user.age = Number(req.body.age);
       user.weight = Number(req.body.weight);
       user.height = Number(req.body.height);
+      user.unit = req.body.unit;
+      user.activity = req.body.activity;
+      user.bmi = Number(req.body.bmi);
+      user.bmiCategory = req.body.bmiCategory;
+      user.bmr = Number(req.body.bmr);
+      user.dailycalories = Number(req.body.dailycalories);
 
       user.save()
-        .then(() => res.json('User updated!'))
+        .then(newuser => res.json({'data': 'User added!', 'id': newuser._id}))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));

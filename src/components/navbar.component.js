@@ -19,6 +19,9 @@ export default class Navbar extends Component {
           <Link to="/workout/add" className="nav-link">Log Workout</Link>
           </li>          
           <li className="navbar-item">
+          <Link to="/routine/add" className="nav-link">Create Routine</Link>
+          </li>
+          <li className="navbar-item">
           <Link to="/exercise" className="nav-link">All Exercises</Link>
           </li>
           <li className="navbar-item">

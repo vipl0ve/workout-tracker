@@ -6,7 +6,13 @@ const userSchema = new Schema({
   gender: { type: String, required: true },
   age: { type: Number, required: true },
   weight: { type: Number, required: true },
-  height: { type: Number, required: true }
+  height: { type: Number, required: true },
+  unit: { type: String, required: true },
+  activity: { type: String, required: true },
+  bmi: { type: Number, required: true },
+  bmiCategory: { type: String, required: true },
+  bmr: { type: Number, required: true },
+  dailycalories: { type: Number, required: true }
 }, {
   timestamps: true,
 });

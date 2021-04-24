@@ -47,8 +47,8 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
   Exercise.findById(req.params.id)
     .then(exercise => {
-      exercise.exercisename = req.body.exercisename;
       exercise.progname = req.body.progname;
+      exercise.exercisename = req.body.exercisename;
       exercise.progrank = Number(req.body.progrank);
       exercise.discription = req.body.discription;
       exercise.type = req.body.type;

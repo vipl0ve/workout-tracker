@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-export default class CreateUser extends Component {
+export default class EditUser extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeGender = this.onChangeGender.bind(this);
     this.onChangeAge = this.onChangeAge.bind(this);
     this.onChangeWeight = this.onChangeWeight.bind(this);
@@ -34,10 +33,27 @@ export default class CreateUser extends Component {
     }
   }
 
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    })
+  componentDidMount() {
+    axios.get('http://localhost:5000/users/'+this.props.match.params.id)
+      .then(response => {
+        this.setState({
+          user: response.data,
+          username: response.data.username,
+          gender: response.data.gender,
+          age: response.data.age,
+          weight: response.data.weight,
+          height: response.data.height,
+          unit: response.data.unit,
+          activity: response.data.activity,
+          bmi: response.data.bmi,
+          bmiCategory: response.data.bmiCategory,
+          bmr: response.data.bmr,
+          dailycalories:response.data.dailycalories,
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   }
 
   onChangeGender(e) {
@@ -174,27 +190,23 @@ export default class CreateUser extends Component {
     }
 
     console.log(user);
+    console.log(this.props.match.params.id);
 
-    axios.post('http://localhost:5000/users/add', user)
-      .then(res => {
-        console.log(res);
-        window.location = '/user/profile/'+res.data.id;
-      });
+    axios.post('http://localhost:5000/users/update/', this.props.match.params.id)
+      .then(res => {console.log(res);});
+
+    window.location = '/user/profile/'+this.props.match.params.id;
+    
   }
 
   render() {
     return (
       <div>
-        <h3>Create New User</h3>
+        <h3>Edit User</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group"> 
             <label>Username: </label>
-            <input  type="text"
-                required
-                className="form-control"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                />
+            <h2> {this.state.username} </h2>
           </div>
           <div className="form-group"> 
             <label>Gender: </label>
@@ -267,7 +279,7 @@ export default class CreateUser extends Component {
             <button type="button" onClick={() => this.updateDetails()}>Update Details</button>
           </div>
           <div className="form-group">
-            <input type="submit" value="Create User" className="btn btn-primary" />
+            <input type="submit" value="Update User" className="btn btn-primary" />
           </div>
         </form>
       </div>

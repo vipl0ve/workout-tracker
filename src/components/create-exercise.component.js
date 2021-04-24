@@ -13,12 +13,28 @@ export default class CreateExercise extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-        exercisename: '',
         progname: '',
+        progressions: [],
+        exercisename: '',
         progrank: 0,
         discription: '',
         type: 'Strength'
     }
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:5000/progressions/')
+    .then(response => {
+      if (response.data.length > 0) {
+        this.setState({
+          progressions: response.data.map(progressions => progressions.title),
+          progname: response.data[0].title
+        })
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
 
   onChangeExercisename(e) {
@@ -55,8 +71,8 @@ export default class CreateExercise extends Component {
     e.preventDefault();
   
     const exercise = {
-      exercisename: this.state.exercisename,
       progname: this.state.progname,
+      exercisename: this.state.exercisename,
       progrank: this.state.progrank,
       discription: this.state.discription,
       type: this.state.type
@@ -66,14 +82,6 @@ export default class CreateExercise extends Component {
 
     axios.post('http://localhost:5000/exercises/add', exercise)
       .then(res => console.log(res.data));
-
-    this.setState({
-        exercisename: '',
-        progname: '',
-        progrank: 0,
-        discription: '',
-        type: 'Strength'
-    })
     
     window.location = '/exercise';
   }
@@ -83,6 +91,23 @@ export default class CreateExercise extends Component {
       <div>
         <h3>Create New Exercise</h3>
         <form onSubmit={this.onSubmit}>
+        <div className="form-group"> 
+            <label>Progression Name: </label>
+            <select ref="userInput"
+                required
+                className="form-control"
+                value={this.state.progname}
+                onChange={this.onChangeProgName}>
+                {
+                  this.state.progressions.map(function(progression) {
+                    return <option 
+                      key={progression}
+                      value={progression}>{progression}
+                      </option>;
+                  })
+                }  
+            </select>
+          </div>
           <div className="form-group"> 
             <label>Exercise Name: </label>
             <input  type="text"
@@ -90,15 +115,6 @@ export default class CreateExercise extends Component {
                 className="form-control"
                 value={this.state.exercisename}
                 onChange={this.onChangeExercisename}
-                />
-          </div>
-          <div className="form-group"> 
-            <label>Progression Name: </label>
-            <input  type="text"
-                required
-                className="form-control"
-                value={this.state.progname}
-                onChange={this.onChangeProgName}
                 />
           </div>
           <div className="form-group">
