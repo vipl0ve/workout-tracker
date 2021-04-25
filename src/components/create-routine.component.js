@@ -9,7 +9,7 @@ const Exercise = props => (
       <td>{props.exercise.progrank}</td>
       <td>{props.exercise.type}</td>
       <td>
-        <a href="#" onClick={() => { props.addExercise(props.exercise) }}>Add</a>
+        <a href="#" onClick={() => { props.addExercise(props.exercise._id) }}>Add</a>
       </td>
     </tr>
   )

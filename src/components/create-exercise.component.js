@@ -6,29 +6,30 @@ export default class CreateExercise extends Component {
     super(props);
 
     this.onChangeExercisename = this.onChangeExercisename.bind(this);
-    this.onChangeProgName = this.onChangeProgName.bind(this);
-    this.onChangeProgRank = this.onChangeProgRank.bind(this);
-    this.onChangeDiscription = this.onChangeDiscription.bind(this);
     this.onChangeType = this.onChangeType.bind(this);
+    this.onChangeCategory = this.onChangeCategory.bind(this);
+    this.onChangeDiscription = this.onChangeDiscription.bind(this);
+    this.onChangeUserId = this.onChangeUserId.bind(this);  
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-        progname: '',
-        progressions: [],
         exercisename: '',
-        progrank: 0,
+        type: 'Repetition',
+        category: 'Strength',
         discription: '',
-        type: 'Strength'
+        progressionId: '',
+        userId: '',
+        users: []
     }
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/progressions/')
+    axios.get('http://localhost:5000/users/')
     .then(response => {
       if (response.data.length > 0) {
         this.setState({
-          progressions: response.data.map(progressions => progressions.title),
-          progname: response.data[0].title
+          users: response.data.map(user => ({'username': user.username, 'userid': user._id})),
+          userId: response.data[0]._id
         })
       }
     })
@@ -43,15 +44,15 @@ export default class CreateExercise extends Component {
     });
   }
 
-  onChangeProgName(e) {
+  onChangeType(e) {
     this.setState({
-        progname: e.target.value
+        type: e.target.value
     });
   }
 
-  onChangeProgRank(e) {
+  onChangeCategory(e) {
     this.setState({
-        progrank: e.target.value
+        category: e.target.value
     });
   }
 
@@ -61,9 +62,9 @@ export default class CreateExercise extends Component {
     });
   }
 
-  onChangeType(e) {
+  onChangeUserId(e) {
     this.setState({
-        type: e.target.value
+        userId: e.target.value
     });
   }
 
@@ -71,11 +72,12 @@ export default class CreateExercise extends Component {
     e.preventDefault();
   
     const exercise = {
-      progname: this.state.progname,
       exercisename: this.state.exercisename,
-      progrank: this.state.progrank,
+      type: this.state.type,
+      category: this.state.category,
       discription: this.state.discription,
-      type: this.state.type
+      progressionId: this.state.progressionId,
+      userId: this.state.userId, 
     };
   
     console.log(exercise);
@@ -91,23 +93,6 @@ export default class CreateExercise extends Component {
       <div>
         <h3>Create New Exercise</h3>
         <form onSubmit={this.onSubmit}>
-        <div className="form-group"> 
-            <label>Progression Name: </label>
-            <select ref="userInput"
-                required
-                className="form-control"
-                value={this.state.progname}
-                onChange={this.onChangeProgName}>
-                {
-                  this.state.progressions.map(function(progression) {
-                    return <option 
-                      key={progression}
-                      value={progression}>{progression}
-                      </option>;
-                  })
-                }  
-            </select>
-          </div>
           <div className="form-group"> 
             <label>Exercise Name: </label>
             <input  type="text"
@@ -118,14 +103,29 @@ export default class CreateExercise extends Component {
                 />
           </div>
           <div className="form-group">
-            <label>Progression Rank: </label>
-            <input 
-                type="number" 
+            <label>Type: </label>
+            <select ref="userInput"
+                required
                 className="form-control"
-                value={this.state.progrank}
-                onChange={this.onChangeProgRank}
-                />
+                value={this.state.type}
+                onChange={this.onChangeType}>
+                    <option value="Repetition">Repetition</option>
+                    <option value="Duration">Duration</option>
+            </select>
           </div>
+          <div className="form-group">
+            <label>Category: </label>
+            <select ref="userInput"
+                required
+                className="form-control"
+                value={this.state.category}
+                onChange={this.onChangeCategory}>
+                    <option value="Strength">Strength</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Mobility">Mobility</option>
+                    <option value="Others">Others</option>  
+            </select>
+          </div>          
           <div className="form-group">
             <label>Discription: </label>
             <input 
@@ -136,19 +136,22 @@ export default class CreateExercise extends Component {
                 />
           </div>
           <div className="form-group">
-            <label>Type: </label>
+            <label>User: </label>
             <select ref="userInput"
                 required
                 className="form-control"
-                value={this.state.type}
-                onChange={this.onChangeType}>
-                    <option value="Strength">Strength</option>
-                    <option value="Cardio">Cardio</option>
-                    <option value="Mobility">Mobility</option>
-                    <option value="Others">Others</option>  
+                value={this.state.userId}
+                onChange={this.onChangeUserId}>
+                {
+                  this.state.users.map(function(user) {
+                    return <option 
+                      key={user.username}
+                      value={user.userid}>{user.username}
+                      </option>;
+                  })
+                }  
             </select>
           </div>
-
           <div className="form-group">
             <input type="submit" value="Create Exercise" className="btn btn-primary" />
           </div>

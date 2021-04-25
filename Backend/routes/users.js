@@ -25,7 +25,7 @@ router.route('/add').post((req, res) => {
   const newUser = new User({username, gender, age, weight, height, unit, activity, bmi, bmiCategory, bmr, dailycalories});
 
   newUser.save()
-  .then(newuser => res.json({'data': 'User added!', 'id': newuser._id}))
+  .then(response => res.json({'data': 'User added!', 'id': response._id}))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -60,7 +60,7 @@ router.route('/update/:id').post((req, res) => {
       user.dailycalories = Number(req.body.dailycalories);
 
       user.save()
-        .then(newuser => res.json({'data': 'User added!', 'id': newuser._id}))
+        .then(response => res.json({'data': 'User added!', 'id': response._id}))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));

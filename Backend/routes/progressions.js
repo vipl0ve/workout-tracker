@@ -10,18 +10,20 @@ router.route('/').get((req, res) => {
 
 // Add Progression
 router.route('/add').post((req, res) => {
-  const title = req.body.title;
+  const progname = req.body.progname;
+  const category = req.body.category;
   const discription = req.body.discription;
-  const type = req.body.type;
+  const exercises = req.body.exercises;
 
   const newProgression = new Progression({
-    title,
+    progname,
+    category,
     discription,
-    type
+    exercises
   });
 
   newProgression.save()
-  .then(() => res.json('Progression added!'))
+  .then((response) => res.json({'data': 'Progression added!', 'id': response._id}))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -43,12 +45,13 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Progression.findById(req.params.id)
     .then(progression => {
-      progression.title = req.body.title;
+      progression.progname = req.body.progname;
+      progression.category = req.body.category;
       progression.discription = req.body.discription;
-      progression.type = req.body.type;
+      progression.exercises = req.body.exercises;
 
       progression.save()
-        .then(() => res.json('Progression updated!'))
+      .then((response) => res.json({'data': 'Progression Updated!', 'id': response._id}))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));

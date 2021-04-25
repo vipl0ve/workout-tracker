@@ -11,21 +11,23 @@ router.route('/').get((req, res) => {
 // Add Exercise
 router.route('/add').post((req, res) => {
   const exercisename = req.body.exercisename;
-  const progname = req.body.progname;
-  const progrank = Number(req.body.progrank);
-  const discription = req.body.discription;
   const type = req.body.type;
+  const category = req.body.category;  
+  const discription = req.body.discription;
+  const progressionId = req.body.progressionId;
+  const userId = req.body.userId;
 
   const newExercise = new Exercise({
     exercisename,
-    progname,
-    progrank,
+    type,
+    category,
     discription,
-    type
+    progressionId,
+    userId
   });
 
   newExercise.save()
-  .then(() => res.json('Exercise added!'))
+  .then(newExercise => res.json({'data': 'Exercise added!', 'id': newExercise._id}))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -47,15 +49,16 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
   Exercise.findById(req.params.id)
     .then(exercise => {
-      exercise.progname = req.body.progname;
       exercise.exercisename = req.body.exercisename;
-      exercise.progrank = Number(req.body.progrank);
-      exercise.discription = req.body.discription;
       exercise.type = req.body.type;
+      exercise.category = req.body.category;
+      exercise.discription = req.body.discription;
+      exercise.progressionId = req.body.progressionId;
+      exercise.userId = req.body.userId;
 
       exercise.save()
-        .then(() => res.json('Exercise updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+      .then(newExercise => res.json({'data': 'Exercise Updated!', 'id': newExercise._id}))
+      .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });

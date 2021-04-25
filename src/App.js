@@ -8,6 +8,8 @@ import Home from "./components/home.component";
 import WorkoutLogList from "./components/workoutlogs-list.component";
 import CreateWorkoutLog from "./components/create-workoutlog.component";
 import EditWorkoutLog from "./components/edit-workoutlog.component";
+// import ProgressionList from "./components/progression-list.component";
+import CreateProgression from "./components/create-progression.component";
 import ExercisesList from "./components/exercises-list.component";
 import CreateExercise from "./components/create-exercise.component";
 import EditExercise from "./components/edit-exercise.component";
@@ -33,6 +35,8 @@ function App() {
     {/* <Route path="/routine/" component={RoutinesList} /> */}
     <Route path="/routine/add" component={CreateRoutine} />
     {/* <Route path="/routine/edit/:id" component={EditRoutine} /> */}
+    {/* <Route path="/progression/" component={ProgressionList} /> */}
+    <Route path="/progression/add" component={CreateProgression} />
     <Route path="/exercise/add" component={CreateExercise} />
     <Route path="/exercise/edit/:id" component={EditExercise} />
     <Route path="/user/add" component={CreateUser} />

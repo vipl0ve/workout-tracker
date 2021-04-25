@@ -6,18 +6,19 @@ export default class EditExercise extends Component {
     super(props);
 
     this.onChangeExercisename = this.onChangeExercisename.bind(this);
-    this.onChangeProgName = this.onChangeProgName.bind(this);
-    this.onChangeProgRank = this.onChangeProgRank.bind(this);
-    this.onChangeDiscription = this.onChangeDiscription.bind(this);
     this.onChangeType = this.onChangeType.bind(this);
+    this.onChangeCategory = this.onChangeCategory.bind(this);
+    this.onChangeDiscription = this.onChangeDiscription.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
         exercisename: '',
-        progname: '',
-        progrank: 0,
+        type: 'Repetition',
+        category: 'Strength',
         discription: '',
-        type: 'Strength'
+        progressionId: '',
+        username: '',
+        userId: ''
     }
   }
 
@@ -26,11 +27,18 @@ export default class EditExercise extends Component {
       .then(response => {
         this.setState({
           exercisename: response.data.exercisename,
-          progname: response.data.progname,
-          progrank: response.data.progrank,
+          type: response.data.type,
+          category: response.data.category,
           discription: response.data.discription,
-          type: response.data.type
-        })   
+          progressionId: response.data.progressionId,
+          userId: response.data.userId
+        })
+        return axios.get('http://localhost:5000/users/'+response.data.userId);
+      })
+      .then(response => {
+        this.setState({
+          username: response.data.username
+        })
       })
       .catch(function (error) {
         console.log(error);
@@ -43,40 +51,35 @@ export default class EditExercise extends Component {
     })
   }
 
-  onChangeProgName(e) {
+  onChangeType(e) {
     this.setState({
-      progname: e.target.value
-    })
+        type: e.target.value
+    });
   }
 
-  onChangeProgRank(e) {
+  onChangeCategory(e) {
     this.setState({
-      progrank: e.target.value
-    })
+        category: e.target.value
+    });
   }
 
   onChangeDiscription(e) {
     this.setState({
-      discription: e.target.value
-    })
-  }
-
-  onChangeType(e) {
-    this.setState({
-      type: e.target.value
-    })
+        discription: e.target.value
+    });
   }
 
   onSubmit(e) {
     e.preventDefault();
 
     const exercise = {
-        exercisename: this.state.exercisename,
-        progname: this.state.progname,
-        progrank: this.state.progrank,
-        discription: this.state.discription,
-        type: this.state.type
-      };
+      exercisename: this.state.exercisename,
+      type: this.state.type,
+      category: this.state.category,
+      discription: this.state.discription,
+      progressionId: this.state.progressionId,
+      userId: this.state.userId,
+    };
 
     console.log(exercise);
 
@@ -93,55 +96,51 @@ export default class EditExercise extends Component {
       <h3>Edit Exercise</h3>
       <form onSubmit={this.onSubmit}>
         <div className="form-group"> 
-        <label>Exercise Name: </label>
-            <input  type="text"
-                required
-                className="form-control"
-                value={this.state.exercisename}
-                onChange={this.onChangeExercisename}
-                />
-          </div>
-          <div className="form-group"> 
-            <label>Progression Name: </label>
-            <input  type="text"
-                required
-                className="form-control"
-                value={this.state.progname}
-                onChange={this.onChangeProgName}
-                />
-          </div>
-          <div className="form-group">
-            <label>Progression Rank: </label>
-            <input 
-                type="number" 
-                className="form-control"
-                value={this.state.progrank}
-                onChange={this.onChangeProgRank}
-                />
-          </div>
-          <div className="form-group">
-            <label>Discription: </label>
-            <input 
-                type="textarea" 
-                className="form-control"
-                value={this.state.discription}
-                onChange={this.onChangeDiscription}
-                />
-          </div>
-          <div className="form-group">
-            <label>Type: </label>
-            <select ref="userInput"
-                required
-                className="form-control"
-                value={this.state.type}
-                onChange={this.onChangeType}>
-                    <option value="Strength">Strength</option>
-                    <option value="Cardio">Cardio</option>
-                    <option value="Mobility">Mobility</option>
-                    <option value="Others">Others</option>  
-            </select>
-          </div>
-
+          <label>Exercise Name: </label>
+          <input  type="text"
+              required
+              className="form-control"
+              value={this.state.exercisename}
+              onChange={this.onChangeExercisename}
+              />
+        </div>
+        <div className="form-group">
+          <label>Type: </label>
+          <select ref="userInput"
+              required
+              className="form-control"
+              value={this.state.type}
+              onChange={this.onChangeType}>
+                  <option value="Repetition">Repetition</option>
+                  <option value="Duration">Duration</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Category: </label>
+          <select ref="userInput"
+              required
+              className="form-control"
+              value={this.state.category}
+              onChange={this.onChangeCategory}>
+                  <option value="Strength">Strength</option>
+                  <option value="Cardio">Cardio</option>
+                  <option value="Mobility">Mobility</option>
+                  <option value="Others">Others</option>  
+          </select>
+        </div>        
+        <div className="form-group">
+          <label>Discription: </label>
+          <input 
+              type="textarea" 
+              className="form-control"
+              value={this.state.discription}
+              onChange={this.onChangeDiscription}
+              />
+        </div>
+        <div className="form-group">
+          <label>User: </label>
+          <p>{this.state.username}</p>
+        </div>
         <div className="form-group">
           <input type="submit" value="Edit Exercise" className="btn btn-primary" />
         </div>

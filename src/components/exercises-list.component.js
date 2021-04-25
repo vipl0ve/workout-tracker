@@ -5,10 +5,10 @@ import axios from 'axios';
 const Exercise = props => (
   <tr>
     <td>{props.exercise.exercisename}</td>
-    <td>{props.exercise.progname}</td>
-    <td>{props.exercise.progrank}</td>
-    <td>{props.exercise.discription}</td>
     <td>{props.exercise.type}</td>
+    <td>{props.exercise.category}</td>
+    <td>{props.exercise.discription}</td>
+    <td>{(props.exercise.progressionId) ? "" : "Yes"}</td>
     <td>
       <Link to={"/exercise/edit/"+props.exercise._id}>edit</Link> | <a href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</a>
     </td>
@@ -56,10 +56,10 @@ export default class ExercisesList extends Component {
           <thead className="thead-light">
             <tr>
               <th>Exercise Name</th>
-              <th>Progression Name</th>
-              <th>Progression Rank</th>
-              <th>Discription</th>
               <th>Type</th>
+              <th>Category</th>
+              <th>Discription</th>
+              <th>Progression</th>
               <th>Actions</th>
             </tr>
           </thead>

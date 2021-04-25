@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const progressionSchema = new Schema({
-  title: { type: String, required: true },
+  progname: { type: String, required: true },
+  category: { type: String, required: true, trim: true },
   discription: { type: String, trim: true },
-  type: { type: String, required: true, trim: true }
+  exercises: { type: Array, trim: true },
 }, {
   timestamps: true,
 });
